@@ -14,14 +14,14 @@ module.exports = function world () {
     if (worldname === undefined) {
       worldname = 'default'
     }
-    svg = d3.select('body').append('svg').attr('id', worldname)
+    svg = d3.select('div#app').append('svg').attr('id', worldname)
 
     svg.params = params
 
     svg.attr('preserveAspectRatio', 'xMidYMid')
     svg.attr('viewBox', '0 0 ' + params.size_x + ' ' + params.size_y)
 
-    svg.style('background-color', 'rgba(0,0,255,0.1)')
+    svg.style('background-color', 'rgba(0,0,0,0.1)')
       .style('width', '100%')
 
     emitters = []
