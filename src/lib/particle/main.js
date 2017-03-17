@@ -21,10 +21,13 @@ module.exports = function(){
   var gravity_maker = require('./forces/gravity.js')
   var linear_gravity_maker = require('./forces/linear_gravity.js')
 
-  // var emitter_a = world.create_emitter()
-  // emitter_a.set_color('rgba(255,0,0,0.5)')
-  // emitter_a.add_force(gravity_maker(10, 1, -1))
+  var emitter_a = world.create_emitter()
+  emitter_a.set_color('rgba(255,0,0,0.5)')
+  // emitter_a.add_force(gravity_maker(1000, 1, -1, 100))
+  // emitter_a.add_force(gravity_maker(10, 1, 1, 0.1))
   // emitter_a.add_force(noise(0.1))
+  //emitter_a.add_force(static_noise(0.0))
+  emitter_a.add_force(static_noise(0.01))
   // emitter_a.add_force(dampen(0.99))
 
   // var emitter_b = world.create_emitter()
@@ -73,10 +76,11 @@ module.exports = function(){
   }
 
   function ring_buffer (len) {
-    var ring_buffer = JSON.parse(fs.readFileSync(__dirname + '/512.json', 'utf8'))
-    // for (var i = 0; i < n_elements; i++) {
-    //   ring_buffer.push(Math.random())
-    // }
+    // var ring_buffer = JSON.parse(fs.readFileSync(__dirname + '/512.json', 'utf8'))
+    var ring_buffer = []
+    for (var i = 0; i < len; i++) {
+      ring_buffer.push(Math.random())
+    }
     var idx = 0
     return function () {
       idx += 1

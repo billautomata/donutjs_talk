@@ -4,8 +4,6 @@
 </template>
 
 <script>
-import foo from '../lib/main.js'
-
 export default {
   name: 'hello',
   data () {
@@ -13,7 +11,7 @@ export default {
     }
   },
   mounted(){
-    require('../lib/main.js')()
+    require('../lib/particle/main.js')()
   }
 }
 </script>
