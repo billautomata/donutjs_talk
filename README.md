@@ -4,6 +4,9 @@
 * https://v8project.blogspot.com/2015/12/theres-mathrandom-and-then-theres.html
 * https://tonejs.github.io/docs/#Sequence
 
+* https://apod.nasa.gov/apod/ap160720.html
+* https://www.youtube.com/watch?v=RvAwB7ogkik 
+
 # things to show
 * different sources of random numbers
   * math.random

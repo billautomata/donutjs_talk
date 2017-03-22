@@ -25,6 +25,8 @@
   "dependencies": {
     "brfs": "^1.4.3",
     "d3": "^4.7.1",
+    "three": "^0.84.0",
+    "three-obj-exporter": "0.0.1",
     "vue": "^2.0.1"
   },
   "devDependencies": {
