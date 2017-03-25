@@ -1,12 +1,18 @@
+// set size from noise field explicitly
+
 module.exports = function(){
   var THREE = require('three')
   var dat = require('dat-gui')
 	var gui = new dat.GUI();
 
-  var perlin = require('./perlin_noise.js')
+  var perlin = require('./perlin_noise.js')()
 
   window.sample_multiplier = 0.1
-  window.time = false
+  window.sample_offset_x = 0
+  window.sample_offset_y = 0
+  window.sample_multiplier_x = 1
+  window.sample_multiplier_y = 1
+  window.time = 'off'
 
   var noise = perlin.noise
   window.perlin = perlin
@@ -14,13 +20,19 @@ module.exports = function(){
   perlin.noiseDetail(4,0.1)
   perlin.noiseSeed(1)
 
-
   window.octaves = 4
   window.falloff = 0.75
+  window.time_speed = 0.1
 
-  gui.add(window, 'sample_multiplier', 0, 1)
-  gui.add(window, 'octaves', 1, 10)
+  gui.add(window, 'sample_multiplier', 0, 0.5)
+  gui.add(window, 'sample_offset_x', 0, 10)
+  gui.add(window, 'sample_offset_y', 0, 10)
+  gui.add(window, 'sample_multiplier_x', 0.5, 10.5)
+  gui.add(window, 'sample_multiplier_y', 0.5, 10.5)
+  gui.add(window, 'octaves', 1, 10).step(1)
   gui.add(window, 'falloff', 0, 1)
+  gui.add(window, 'time', ['on', 'off'])
+  gui.add(window, 'time_speed', 0, 0.1)
 
 
   var Exporter = require('three-obj-exporter')
@@ -74,8 +86,8 @@ module.exports = function(){
       side: THREE.DoubleSide
   });
 
-  var x = 32
-  var y = 32
+  var x = 64
+  var y = 64
 
   var geometry
 
@@ -139,14 +151,14 @@ module.exports = function(){
       for(var i = 0; i < x; i++){
         for(var j = 0; j < y; j++){
           (function(){
-            if(!window.time){
-              meshes[mesh_idx].scale.x = noise(i * sample_multiplier, j * sample_multiplier)
-              meshes[mesh_idx].scale.y = noise(i * sample_multiplier, j * sample_multiplier)
-              meshes[mesh_idx].scale.z = noise(i * sample_multiplier, j * sample_multiplier)
+            if(window.time === 'off'){
+              meshes[mesh_idx].scale.x = noise(i * sample_multiplier * sample_multiplier_x + sample_offset_x, j * sample_multiplier * sample_multiplier_y + sample_offset_y)
+              meshes[mesh_idx].scale.y = noise(i * sample_multiplier * sample_multiplier_x + sample_offset_x, j * sample_multiplier * sample_multiplier_y + sample_offset_y)
+              meshes[mesh_idx].scale.z = noise(i * sample_multiplier * sample_multiplier_x + sample_offset_x, j * sample_multiplier * sample_multiplier_y + sample_offset_y)
             } else {
-              meshes[mesh_idx].scale.x = noise(i * sample_multiplier, j * sample_multiplier, time * 0.1)
-              meshes[mesh_idx].scale.y = noise(i * sample_multiplier, j * sample_multiplier, time * 0.1)
-              meshes[mesh_idx].scale.z = noise(i * sample_multiplier, j * sample_multiplier, time * 0.1)
+              meshes[mesh_idx].scale.x = noise(i * sample_multiplier * sample_multiplier_x + sample_offset_x, j * sample_multiplier * sample_multiplier_y + sample_offset_y, time * window.time_speed)
+              meshes[mesh_idx].scale.y = noise(i * sample_multiplier * sample_multiplier_x + sample_offset_x, j * sample_multiplier * sample_multiplier_y + sample_offset_y, time * window.time_speed)
+              meshes[mesh_idx].scale.z = noise(i * sample_multiplier * sample_multiplier_x + sample_offset_x, j * sample_multiplier * sample_multiplier_y + sample_offset_y, time * window.time_speed)
             }
             mesh_idx +=1
           })()
@@ -161,7 +173,7 @@ module.exports = function(){
       // mesh.rotation.x += 0.005;
       // mesh.rotation.y += 0.005;
 
-      var r = x
+      var r = x * 0.75
       // camera.position.y = 100 + (10 * Math.sin(time*10))
       camera.position.y = r * Math.sin(time*0.01)
       camera.position.x = r * Math.cos(time*0.01)

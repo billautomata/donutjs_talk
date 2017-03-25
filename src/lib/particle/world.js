@@ -14,7 +14,7 @@ module.exports = function world () {
     if (worldname === undefined) {
       worldname = 'default'
     }
-    svg = d3.select('div#app').append('svg').attr('id', worldname)
+    svg = d3.select('body').append('svg').attr('id', worldname)
 
     svg.params = params
 
