@@ -5,7 +5,7 @@
 * https://tonejs.github.io/docs/#Sequence
 
 * https://apod.nasa.gov/apod/ap160720.html
-* https://www.youtube.com/watch?v=RvAwB7ogkik 
+* https://www.youtube.com/watch?v=RvAwB7ogkik
 
 # things to show
 * different sources of random numbers
@@ -25,12 +25,10 @@
 * octaves in random numbers
 * threejs scene pushing grass on a field with trees and birds
 * signed distance function
-* https://en.wikipedia.org/wiki/Simplex_noise
 
-## thesis
-
-
-
+* generate a function that generates long strings of cos and sin operations to create complex waveforms
+* compare random numbers, complex sinusoidal waveforms, perlin noise
+* noise is useful because you can sample it at different zoom levels and offsets
 
 ## Build Setup
 
