@@ -30,6 +30,8 @@
 * compare random numbers, complex sinusoidal waveforms, perlin noise
 * noise is useful because you can sample it at different zoom levels and offsets
 
+* rolling ocean waves by using a high y sample multiplier and constantly increase the y offset
+
 ## Build Setup
 
 ``` bash
