@@ -14,17 +14,33 @@ module.exports = function(){
   gui.close()
   window.gui = gui
 
+  // perlin noise instances
   var perlin = require('./perlin_noise.js')()
+  var tree_placement_perlin = require('./perlin_noise.js')()
+  var tree_height_perlin = require('./perlin_noise.js')()
+  var tree_species_perlin = require('./perlin_noise.js')()
 
+  var tree_resolution = 15 // distance per step for tree placement
+
+  tree_placement_perlin.noiseSeed(303)
+  window.tree_placement_sample_multiplier = 0.01
+  window.tree_placement_noise_threshold = 0.55
+
+  tree_height_perlin.noiseSeed(303)
+  window.tree_height_sample_multiplier = 0.01
+  window.tree_max_height = 50
+  window.tree_min_height = 1
+
+  // terrain
   window.sample_multiplier = 0.003
-  window.sample_offset_x = 0.001
+  window.sample_offset_x = 0.00
   window.sample_offset_y = 0.00
   window.sample_multiplier_x = 1
   window.sample_multiplier_y = 1
   window.time = 'off'
   window.height = 100
   window.height_offset = 0
-  window.noise_threshold = 0.65
+  window.noise_threshold = 0
 
   window._wireframe = true
 
@@ -55,7 +71,7 @@ module.exports = function(){
   gui.add(window, 'noise_threshold', 0, 1)
 
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1500);
+  var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 2500);
   // camera.position.y = 40
   // camera.position.x = 300
   // camera.position.z = 40
@@ -70,35 +86,26 @@ module.exports = function(){
   // renderer.setClearColor(0x3366ff, 1);
   renderer.setClearColor(0x0, 1)
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
+  // renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
   document.body.appendChild(renderer.domElement);
 
-  // var ambientLight = new THREE.AmbientLight(0xFFFFFF);
-  // scene.add(ambientLight);
+  var ambientLight = new THREE.AmbientLight(0x111111);
+  scene.add(ambientLight);
 
   var lights = [];
-  lights[0] = new THREE.PointLight(0xffffff, 1, 0);
-
-  lights[0] = new THREE.SpotLight(0xffffff, 1, 0)
-  lights[0].position.set(1000, 1000, 0);
+  lights[0] = new THREE.PointLight(0xffffff, 1, 500);
+  lights[0].castShadow = true
+  lights[0].shadow.mapSize.width = 4096;
+  lights[0].shadow.mapSize.height = 4096;
   lights[0].lookAt(scene.position)
-
-  lights.forEach(function(l){
-    l.castShadow = true;
-  })
 
   scene.add(lights[0]);
 
-  // var sphereGeometry = new THREE.SphereBufferGeometry( 50, 64, 64 );
-  // var sphereMaterial = new THREE.MeshPhongMaterial( { color: 0xff0000, wireframe: true } );
-  // var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
-  // sphere.position.y = 10
-  // sphere.castShadow = true; //default is false
-  // sphere.receiveShadow = false; //default
-  // scene.add( sphere );
+  var plane_size_x = 1000
+  var plane_size_y = 1000
 
-  var geometry = new THREE.PlaneGeometry( 1000, 1000, 64, 64 );
+  var geometry = new THREE.PlaneGeometry( 1000, 1000, 256, 256 );
   geometry.dynamic = true
   var mesh = new THREE.Mesh(geometry);
   mesh.castShadow = true
@@ -107,13 +114,49 @@ module.exports = function(){
 
   window.mesh = mesh
 
-  mesh.material = new THREE.MeshBasicMaterial({
+  mesh.material = new THREE.MeshPhongMaterial({
       // color: 0x00ff00,
       wireframe: _wireframe,
       side: THREE.DoubleSide,
       vertexColors: THREE.VertexColors
   });
   scene.add(mesh);
+
+  var grassShape = new THREE.Shape()
+  grassShape.moveTo(0,0)
+  grassShape.lineTo(1.5, 0)
+  grassShape.lineTo(0, 1.5)
+  grassShape.lineTo(-1.5, 0)
+  grassShape.lineTo(0, 0)
+
+  var tree_trunk_material = new THREE.MeshPhongMaterial( { color: 0xf4a460,  side: THREE.DoubleSide } );
+  var tree_leaf_material = new THREE.MeshPhongMaterial( { color: 0x00f100, side: THREE.DoubleSide, wireframe: false } );
+
+  function tree_blade(x,y,z){
+
+    var o = new THREE.Object3D()
+    o.position.x = x
+    o.position.y = y - 2
+    o.position.z = z
+
+    var tree_geometry = new THREE.ShapeGeometry( grassShape );
+    var tree_mesh = new THREE.Mesh( tree_geometry, tree_trunk_material ) ;
+    tree_mesh.castShadow = true
+    tree_mesh.receiveShadow = true
+
+    var cone_geometry = new THREE.ConeGeometry(5,1,4)
+    var cone_mesh = new THREE.Mesh(cone_geometry, tree_leaf_material)
+    cone_mesh.castShadow = true
+    cone_mesh.receiveShadow = true
+    cone_mesh.position.y = 1
+    cone_mesh.rotation.y = Math.random() * 10
+
+    o.add(cone_mesh)
+    o.add(tree_mesh)
+    o.scale.y = window.tree_min_height + (tree_height_perlin.noise(x * window.tree_height_sample_multiplier, y * window.tree_height_sample_multiplier) * window.tree_max_height)
+    scene.add(o)
+  }
+
 
   var prevFog = false;
   var frame_number = 0
@@ -143,6 +186,16 @@ module.exports = function(){
       var noise_result = noise((v.x * sample_multiplier * sample_multiplier_x) + offset_x, (v.y * sample_multiplier * sample_multiplier_y) + offset_y, time * window.time_speed)
       v.z = (window.height * noise_result) - window.height_offset
     })
+
+    for(var tree_x = -1* (plane_size_x*0.5); tree_x < plane_size_x * 0.5; tree_x += tree_resolution){
+      for(var tree_y = -1 * (plane_size_y*0.5); tree_y < plane_size_y * 0.5; tree_y += tree_resolution){
+        if(tree_placement_perlin.noise(tree_x * window.tree_placement_sample_multiplier, tree_y * window.tree_placement_sample_multiplier) > window.tree_placement_noise_threshold){
+          var noise_result = noise((tree_x * sample_multiplier * sample_multiplier_x) + offset_x, (tree_y * sample_multiplier * sample_multiplier_y) + offset_y, time * window.time_speed)
+          tree_blade(tree_x, (window.height * noise_result) - window.height_offset, tree_y )
+        }
+      }
+    }
+
     mesh.geometry.faces.forEach(function(face,face_index){
       ['a', 'b', 'c'].forEach(function(face_vertex,i){
         var vertex_index = face[face_vertex]
@@ -166,18 +219,21 @@ module.exports = function(){
       requestAnimationFrame(render);
 
       var time = Date.now() * 0.0001;
+      var time2 = time * 2
+      var time5 = time * 5
+      var time10 = time * 10
 
-      update_mesh()
+      var r = 800
 
-      var r = 400
+      lights[0].position.set( 300 * Math.sin(time5), 400, 300 * Math.cos(time5));
+      // lights[0].lookAt(scene.position)
 
-      camera.position.y = 400
-      camera.position.z = -r * Math.sin(time * 0.5) * 2
-      camera.position.x = -r * Math.cos(time * 0.5) * 2
+      camera.position.y = r * 0.25
+      camera.position.z = -r * Math.sin(time * 0.5)
+      camera.position.x = -r * Math.cos(time * 0.5)
       // camera.position.z = -r * Math.cos(time*4)
 
       camera.lookAt(scene.position)
-
       renderer.render(scene, camera);
 
   };
@@ -190,6 +246,6 @@ module.exports = function(){
       renderer.setSize(window.innerWidth, window.innerHeight);
 
   }, false);
-
+  update_mesh()
   render();
 }
