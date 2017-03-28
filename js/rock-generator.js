@@ -101,11 +101,12 @@ module.exports = function(){
 
   var material = new THREE.MeshPhongMaterial({
       color: 0xbada55,
-      wireframe: true,
+      shading: THREE.FlatShading,
+      wireframe: false,
       side: THREE.DoubleSide
   });
 
-  var res = 200
+  var res = 100
   var baseSphereGeometry = new THREE.SphereGeometry(window.sphere_radius, res, res)
   var sphereGeometry = new THREE.SphereGeometry(window.sphere_radius, res, res)
   var mesh = new THREE.Mesh(sphereGeometry, material)

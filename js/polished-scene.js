@@ -50,6 +50,7 @@ module.exports = function(){
   window.height = 100
   window.height_offset = 0
   window.noise_threshold = 0
+  window.radius = 500
 
   window._wireframe = false
 
@@ -66,18 +67,19 @@ module.exports = function(){
   window.offset_x = 0
   window.offset_y = 0
 
-  gui.add(window, 'height', 1, 300)
-  gui.add(window, 'sample_multiplier', 0, 0.5)
-  gui.add(window, 'sample_offset_x', 0, 1.5).step(0.001)
-  gui.add(window, 'sample_offset_y', 0, 1.5).step(0.001)
-  gui.add(window, 'sample_multiplier_x', 0, 10.5)
-  gui.add(window, 'sample_multiplier_y', 0, 10.5)
-  gui.add(window, 'octaves', 1, 10).step(1)
-  gui.add(window, 'falloff', 0, 1)
-  gui.add(window, 'time', ['on', 'off'])
-  gui.add(window, 'time_speed', 0, 1)
-  gui.add(window, 'height_offset', 0, 300)
-  gui.add(window, 'noise_threshold', 0, 1)
+  // gui.add(window, 'height', 1, 300)
+  // gui.add(window, 'sample_multiplier', 0, 0.5)
+  // gui.add(window, 'sample_offset_x', 0, 1.5).step(0.001)
+  // gui.add(window, 'sample_offset_y', 0, 1.5).step(0.001)
+  // gui.add(window, 'sample_multiplier_x', 0, 10.5)
+  // gui.add(window, 'sample_multiplier_y', 0, 10.5)
+  // gui.add(window, 'octaves', 1, 10).step(1)
+  // gui.add(window, 'falloff', 0, 1)
+  // gui.add(window, 'time', ['on', 'off'])
+  // gui.add(window, 'time_speed', 0, 1)
+  // gui.add(window, 'height_offset', 0, 300)
+  // gui.add(window, 'noise_threshold', 0, 1)
+  gui.add(window, 'radius', 100, 3000)
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 2500);
@@ -103,13 +105,13 @@ module.exports = function(){
   // scene.add(ambientLight);
 
   var lights = [];
-  lights[0] = new THREE.PointLight(0xffffff, 1, 1500);
+  lights[0] = new THREE.PointLight(0xffffff, 0.5, 1500);
   lights[0].castShadow = true
   lights[0].shadow.mapSize.width = 4096;
   lights[0].shadow.mapSize.height = 4096;
   lights[0].lookAt(scene.position)
 
-  lights[1] = new THREE.DirectionalLight(0xffffff, 1);
+  lights[1] = new THREE.DirectionalLight(0xffffff, 0.5);
   lights[1].position.x = 1
   lights[1].castShadow = true
   lights[1].shadow.mapSize.width = 4096;
@@ -132,7 +134,7 @@ module.exports = function(){
   window.mesh = mesh
 
   mesh.material = new THREE.MeshStandardMaterial({
-      // color: 0x00ff00,
+      shading: THREE.FlatShading,
       wireframe: _wireframe,
       side: THREE.DoubleSide,
       roughness: 1.0,
@@ -148,8 +150,8 @@ module.exports = function(){
   grassShape.lineTo(-1.5, 0)
   grassShape.lineTo(0, 0)
 
-  var tree_trunk_material = new THREE.MeshPhongMaterial( { color: 0xf4a460,  side: THREE.DoubleSide } );
-  var tree_leaf_material = new THREE.MeshPhongMaterial( { color: 0x00f100, side: THREE.DoubleSide, wireframe: false } );
+  var tree_trunk_material = new THREE.MeshPhongMaterial( { color: 0xf4a460,  side: THREE.DoubleSide, shading: THREE.FlatShading, } );
+  var tree_leaf_material = new THREE.MeshPhongMaterial( { color: 0x00f100, side: THREE.DoubleSide, wireframe: false, shading: THREE.FlatShading, } );
 
   function tree_blade(x,y,z){
 
@@ -276,17 +278,17 @@ module.exports = function(){
       var time5 = time * 5
       var time10 = time * 10
 
-      var r = 1200
+      var r = window.radius
 
       lights[0].position.set( 300 * Math.sin(time5), 400, 300 * Math.cos(time5));
       // lights[0].lookAt(scene.position)
 
-      camera.position.y = (r * 0.75) + (r*0.25*(Math.sin(time2)))
+      camera.position.y = (r * 0.25)
       camera.position.z = -r * Math.sin(time * 0.5)
       camera.position.x = -r * Math.cos(time * 0.5)
       // camera.position.z = -r * Math.cos(time*4)
 
-      camera.lookAt(scene.position)
+      camera.lookAt(scene.position.clone().add(new THREE.Vector3(0,100,0)))
       renderer.render(scene, camera);
 
   };
