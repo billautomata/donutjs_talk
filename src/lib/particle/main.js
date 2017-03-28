@@ -22,19 +22,21 @@ module.exports = function(){
   var linear_gravity_maker = require('./forces/linear_gravity.js')
 
   var emitter_a = world.create_emitter()
-  emitter_a.set_color('rgba(255,0,0,0.5)')
-  emitter_a.add_force(gravity_maker(10000, 1, -1, 10))
-  emitter_a.add_force(p5noise({ sample_multiplier: 0.01, amount: 1.0 }))
-  emitter_a.add_force(dampen(0.999))
+  emitter_a.set_position(256 + 64,128)
+  emitter_a.set_color('rgba(255,0,0,1)')
+  emitter_a.add_force(gravity_maker(1000, 1, -1, 100))
+  emitter_a.add_force(p5noise({ sample_multiplier: 1, amount: 1.0 }))
+  emitter_a.add_force(dampen(0.99))
 
   // emitter_a.add_force(noise(0.1))
   // emitter_a.add_force(static_noise(0.0))
 
 
   var emitter_b = world.create_emitter()
-  emitter_b.set_color('rgba(0,255,0,0.5)')
-  emitter_b.add_force(gravity_maker(10000, 1, -1, 10))
-  emitter_b.add_force(noise(1.0))
+  emitter_b.set_position(256 - 64,128)
+  emitter_b.set_color('rgba(0,255,0,1)')
+  emitter_b.add_force(gravity_maker(10000, 1, -1, 100))
+  emitter_b.add_force(noise(0.5))
   emitter_b.add_force(dampen(0.99))
 
   // var emitter_c = world.create_emitter()
@@ -82,8 +84,16 @@ module.exports = function(){
       var t = Date.now() * 0.01
       var p = particle.get_position()
       var v = particle.get_velocity()
-      v.val.x += options.amount * (noisex(p.val.x * options.sample_multiplier, p.val.y * options.sample_multiplier, t) - 0.5)
-      v.val.y += options.amount * (noisey(p.val.x * options.sample_multiplier, p.val.y * options.sample_multiplier, t) - 0.5)
+      v.val.x += options.amount *
+        (noisex(p.val.x * options.sample_multiplier,
+          p.val.y * options.sample_multiplier,
+          t) -
+        0.46)
+      v.val.y += options.amount *
+        (noisey(p.val.x * options.sample_multiplier,
+          p.val.y * options.sample_multiplier,
+          t) -
+        0.46)
     }
   }
 

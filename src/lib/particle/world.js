@@ -21,7 +21,7 @@ module.exports = function world () {
     svg.attr('preserveAspectRatio', 'xMidYMid')
     svg.attr('viewBox', '0 0 ' + params.size_x + ' ' + params.size_y)
 
-    svg.style('background-color', 'rgba(0,0,0,0.1)')
+    svg.style('background-color', 'rgba(0,0,0,1)')
       .style('width', '100%')
 
     emitters = []

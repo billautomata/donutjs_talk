@@ -48,12 +48,17 @@ module.exports = function emitter (_svg) {
     })
   }
 
+  function set_position(x,y){
+    host.set_position(x,y)
+  }
+
   return {
     tick: tick,
     set_color: set_color,
     get_particles: function () { return particles },
     get_params: function () { return params },
     get_host: function () { return host },
-    add_force: function (f) { force_fns.push(f) }
+    add_force: function (f) { force_fns.push(f) },
+    set_position: set_position
   }
 }

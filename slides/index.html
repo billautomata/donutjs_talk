@@ -31,7 +31,8 @@
 						making passwords<br>
 						shuffling arrays
 					<aside class='notes'>
-						<p></p>
+						<p>if you flip a coin 1000 times and it is heads 1000 times, what are the odds it is heads on the 1001th flip? 50%.  The coin doesn't care about the previous flips.</p>
+						<p>when you make a password you want each byte to be independent of the previous byte</p>
 					</aside>
 				</section>
 
@@ -43,13 +44,13 @@
 				</section>
 
 				<section>
-					don't look at everything
+					just look at<br>some random stuff
 					<aside class='notes'>
 						<p>If you want to calculate the brightness of an image, just look at 10% of the pixels and do the math with them.</p>
 					</aside>
 				</section>
 
-				<section>
+				<section data-background-image='img/ant-path.jpg'>
 					stuff is random
 					<aside class='notes'>
 						<p>It also lets you simulate stuff because some stuff is seemingly random.</p>
@@ -85,7 +86,7 @@ Math.random = function (){
 Math.random = function (){
  return Math.abs(Math.sin(Date.now()*0.0001) * Math.cos(Date.now()*0.001))
 }
-// this one is pretty good
+// this one is pretty good, I like the bunching
 Math.random = function (){
  return Math.abs(Math.sin(Date.now()*0.0001) * Math.cos(Date.now()*0.01))
 }
@@ -93,23 +94,38 @@ Math.random = function (){
 					</aside>
 				</section>
 
-				<section  data-background-image='img/random-grid.png'>
+				<section data-background-image='img/random-grid.png'>
 					<p>Math.random( )</p>
 					<p>no zoom<br>not repeatable<br>stuff isn't really random<br>no shift<br>
+					<aside class='notes'></aside>
 				</section>
 
 				<section data-background-image='img/teiltoene_bild3.png'>
 					<p>Math.sin( )</p>
 					<p>zoomable<br>repeatable<br>stuff is kinda sinusoidal<br>1D shift<br>
+					<aside class='notes'></aside>
 				</section>
 
 				<section data-background-image='img/PerlinNoiseFractal.png'>
 					<p>Noise</p>
+					<aside class='notes'>
+						Noise is what was used to generate this.  It already looks like so many things, and that's what it was designed to do.
+					</aside>
+				</section>
+
+				<section data-background-image='img/marblewaterrabbit.jpg'>
+					<p>realism</p>
+					<aside class='notes'>
+ 						Noise was invented by a computer graphics artist who wanted to improve the realism of renders.
+					</aside>
 				</section>
 
 				<section>
 					<p>Math.random</p>
 					<img src='img/math.random.png' style='width: 100%;'>
+					<aside class='notes'>
+						This is the code for math.random.  It has two state variables that get mixed and shifted around at the bit level.
+					</aside>
 				</section>
 
 				<section>
@@ -121,6 +137,9 @@ Math.random = function (){
 					<img src='img/noise-image-4.png' style='width: 15%;'>
 					<img src='img/noise-image-5.png' style='width: 15%;'>
 					</div>
+					<aside class='notes'>
+						This is the code for the version of noise I'm using in this demo.  The code is in the repo.
+					</aside>
 				</section>
 
 				<section>
@@ -129,28 +148,52 @@ Math.random = function (){
 
 				<section>
 					box thing
+					<aside class='notes'>
+						this is a visualizaton of noise in 2D
+					</aside>
 				</section>
 
-				<section>
-					particle system
+				<section data-background-image='img/vector-field.png'>
+					particle system<br>vector field
+					<aside class='notes'>
+						this is a set of particle systems where it's attracted to a center point, but it also flows through a vector field built with noise.  So when a particle flies through that (x,y) position it will be influenced in the same direction.  The green particles have the same thing happen but every tick of the simulation the velocity is bumped around randomly.
+					</aside>
 				</section>
 
-				<section>
-					terrain generator
+				<section data-background-video='img/test.mp4'>
+					<p style='color:white; margin-top: 500px;'>terrain generator</p>
+					<aside class='notes'>
+						This is from star trek 2, this is one of the first particle systems in a movie and it's also likely the first use of noise in computer generation.  It utilized all the things we showed in the box demo.  They needed the algorithm to be repeatable - when the planet height for that position was chosen it needed to be the same on each run, otherwise the camera would fly through a mountain or the ocean wouldn't rise high enough.  They also couldn't store all this information and retrieve it every time they wanted to make a frame.
+					</aside>
 				</section>
 
 				<section>
 					waves thing
+					<aside class='notes'>
+						Here is a thing that kind of emulates waves rolling in from the ocean.  You compress the y axis sample multiplier, then make the waves the right height relative to their period and tune the time, then have them roll in by setting the speed of the sample offset in the y dimension
+					</aside>
+				</section>
+
+				<section>
+					graph of the equation
+					<aside class='notes'>
+						All of this is goverened by a sum of parameters.
+					</aside>
 				</section>
 
 				<section>
 					rock thing
+					<aside class='notes'>
+						You can do this to more than just heightmaps.  A sphere is just a heightmap where the radius is the height of the terrain.
+					</aside>
 				</section>
 
 				<section>
 					scene generator
+					<aside class='notes'>
+						This is piecing it all together.
+					</aside>
 				</section>
-
 			</div>
 		</div>
 
