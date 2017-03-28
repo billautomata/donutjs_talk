@@ -10,10 +10,15 @@
   * increase the frequency of the sprinkles position changes
   * how do you do that in more than just 1 dimension?
 * math.random has a bunch of limitations
-  * not repeatable, some random number generators are repeatable and seedable but not Math.random
+  * not repeatable, some random number generators are repeatable and seed-able but not Math.random
   * natural phenomena is not truly random, and even the stuff that does rely on a dice roll actually relies on a succession of dice rolls averaged out among a large sample size (ants, branch placement on a tree trunk)
   * no zoom
   * can't do frame shifting in x/y/z/time
+* trig functions solve most of those problems
+  * repeatable, sine of pi/2 is 1 every time
+  * you can find it in nature, physics is crawling with trig - things like orbits and force calculations
+  * you can zoom, sin of pi/2 + something really small is still valid
+  * you can frame shift in one dimension
 * use noise
   * zoom-able, shift-able, compress-able, repeat-able, seed-able
   * memory efficient
