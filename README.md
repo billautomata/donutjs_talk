@@ -7,6 +7,8 @@
 * https://apod.nasa.gov/apod/ap160720.html
 * https://www.youtube.com/watch?v=RvAwB7ogkik
 
+* http://flafla2.github.io/2014/08/09/perlinnoise.html
+
 # things to show
 * different sources of random numbers
   * math.random
@@ -32,7 +34,7 @@
 
 * rolling ocean waves by using a high y sample multiplier and constantly increase the y offset
 
-
+* https://en.wikipedia.org/wiki/Timeline_of_computer_animation_in_film_and_television
 
 ## Build Setup
 
@@ -54,14 +56,19 @@ npm test
 ```
 
 ```javascript
-function (){
- return Math.abs(Math.sin(Date.now()*0.0001) * Math.sin(Date.now()*0.001))
+Math.random = function (){
+ return 0.25
 }
-function (){
+Math.random = function (){
  return Math.abs(Math.sin(Date.now()*0.0001))
 }
-function (){
- return Math.abs(Math.tan(Date.now()*0.0001))
+Math.random = function (){
+ return Math.abs(Math.sin(Date.now()*0.0001) * Math.cos(Date.now()*0.0001))
 }
-
+Math.random = function (){
+ return Math.abs(Math.sin(Date.now()*0.0001) * Math.cos(Date.now()*0.001))
+}
+Math.random = function (){
+ return Math.abs(Math.sin(Date.now()*0.0001) * Math.cos(Date.now()*0.01))
+}
 ```
