@@ -79,7 +79,7 @@ module.exports = function(){
   // gui.add(window, 'time_speed', 0, 1)
   // gui.add(window, 'height_offset', 0, 300)
   // gui.add(window, 'noise_threshold', 0, 1)
-  gui.add(window, 'radius', 100, 3000)
+  gui.add(window, 'radius', 300, 1000)
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 2500);
@@ -94,8 +94,8 @@ module.exports = function(){
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  // renderer.setClearColor(0x3366ff, 1);
-  renderer.setClearColor(0x0, 1)
+  renderer.setClearColor(0x3366ff, 1);
+  // renderer.setClearColor(0x0, 1)
   renderer.shadowMap.enabled = true;
   // renderer.shadowMap.type = THREE.PCFShadowMap; // default THREE.PCFShadowMap
 
@@ -105,7 +105,7 @@ module.exports = function(){
   // scene.add(ambientLight);
 
   var lights = [];
-  lights[0] = new THREE.PointLight(0xffffff, 0.5, 1500);
+  lights[0] = new THREE.PointLight(0xffffff, 1.0, 1500);
   lights[0].castShadow = true
   lights[0].shadow.mapSize.width = 4096;
   lights[0].shadow.mapSize.height = 4096;
@@ -244,7 +244,7 @@ module.exports = function(){
       _mesh.position.x = 0
       _mesh.position.y = (window.height * noise_result) - window.height_offset
       _mesh.position.z = 0
-      _mesh.scale.y = 1.5
+      // _mesh.scale.y = 1.5
       _mesh.castShadow = true
       _mesh.receiveShadow = true
       // _mesh.scale.x = _mesh.scale.y = _mesh.scale.z = 0.1
@@ -280,8 +280,8 @@ module.exports = function(){
 
       var r = window.radius
 
-      lights[0].position.set( 300 * Math.sin(time5), 400, 300 * Math.cos(time5));
-      // lights[0].lookAt(scene.position)
+      lights[0].position.set( 300 * Math.sin(time5), 400, 300 * Math.cos(time10));
+      lights[0].lookAt(scene.position)
 
       camera.position.y = (r * 0.25)
       camera.position.z = -r * Math.sin(time * 0.5)

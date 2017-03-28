@@ -40,11 +40,10 @@ module.exports = function(x,y){
 
   var material = new THREE.MeshStandardMaterial({
       color: 0xbada55,
+      shading: THREE.FlatShading,
       wireframe: false,
-      reflectivity: 1.0,
-      clearCoat: 1.0,
-      clearCoatRoughness: 1.0,
       roughness: 1.0,
+      metalness: 0.1,
       side: THREE.DoubleSide
   });
 
