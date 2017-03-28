@@ -150,14 +150,7 @@ module.exports = function(){
       window.sample_offset_y += window.sample_offset_increase_y
 
       mesh.geometry.vertices.forEach(function(v,i){
-        // v.z = (h * ( Math.cos(v.x*a1) * Math.sin(v.y*a2) * Math.cos(v.x * a3) )) + (0 * (Math.random()-0.5))
-        // v.z = noise(v.x * multiplier, v.y * multiplier, time) * h
         v.z = (window.height * noise(v.x * sample_multiplier * sample_multiplier_x + sample_offset_x, v.y * sample_multiplier * sample_multiplier_y + sample_offset_y, time * window.time_speed)) - window.height_offset
-        // v.z += 0.0 * (window.height *
-        //   noise((3.0 * v.x * sample_multiplier * sample_multiplier_x) + sample_offset_x,
-        //     (3.0 * v.y * sample_multiplier * sample_multiplier_y) + sample_offset_y,
-        //     time * window.time_speed)) -
-        //   window.height_offset
       })
       mesh.geometry.verticesNeedUpdate = true
 
