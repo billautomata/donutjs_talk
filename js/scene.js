@@ -1,5 +1,5 @@
 // boxes thing
-// require('./noise-cubes.js')()
+require('./noise-cubes.js')()
 
 // particle system
 // require('../src/lib/particle/main.js')()
@@ -14,7 +14,7 @@
 // require('./rock-generator.js')()
 
 // polished scene
-require('./polished-scene.js')()
+// require('./polished-scene.js')()
 
 
 

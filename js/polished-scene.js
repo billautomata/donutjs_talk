@@ -22,7 +22,7 @@ module.exports = function(){
   var rock_placement_perlin = require('./perlin_noise.js')()
 
   // trees
-  var tree_resolution = 10 // distance per step for tree placement
+  var tree_resolution = 20 // distance per step for tree placement
 
   tree_placement_perlin.noiseSeed(1234567)
   window.tree_placement_sample_multiplier = 0.01
@@ -107,16 +107,15 @@ module.exports = function(){
   var lights = [];
   lights[0] = new THREE.PointLight(0xffffff, 1.0, 1500);
   lights[0].castShadow = true
-  lights[0].shadow.mapSize.width = 4096;
-  lights[0].shadow.mapSize.height = 4096;
+  lights[0].shadow.mapSize.width = 1024;
+  lights[0].shadow.mapSize.height = 1024;
   lights[0].lookAt(scene.position)
 
   lights[1] = new THREE.DirectionalLight(0xffffff, 0.5);
   lights[1].position.x = 1
   lights[1].castShadow = true
-  lights[1].shadow.mapSize.width = 4096;
-  lights[1].shadow.mapSize.height = 4096;
-
+  lights[1].shadow.mapSize.width = 1024;
+  lights[1].shadow.mapSize.height = 1024;
 
   scene.add(lights[0]);
   scene.add(lights[1]);
