@@ -114,8 +114,9 @@ module.exports = function(){
 
   mesh.material = new THREE.MeshPhongMaterial({
       color: 0x00ff00,
-      wireframe: _wireframe,
-      side: THREE.DoubleSide
+      wireframe: false,
+      side: THREE.DoubleSide,
+      shading: THREE.FlatShading,
   });
   scene.add(mesh);
 

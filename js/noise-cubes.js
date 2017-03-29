@@ -83,6 +83,7 @@ module.exports = function(){
   var material = new THREE.MeshStandardMaterial({
       color: 0x00ff00,
       wireframe: false,
+      shading: THREE.FlatShading,
       side: THREE.DoubleSide
   });
 

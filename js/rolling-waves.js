@@ -41,7 +41,7 @@ module.exports = function(){
 
   window.octaves = 4
   window.falloff = 0.75
-  window.time_speed = 0.05
+  window.time_speed = 0.0005
 
   gui.add(window, 'height', 1, 300)
   gui.add(window, 'sample_multiplier', 0, 0.01)
