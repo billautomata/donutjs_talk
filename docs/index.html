@@ -160,7 +160,7 @@ Math.random = function (){
 				</section>
 
 				<section>
-					box thing
+					<a href='/cubes.html'>box thing</a>
 					<aside class='notes'>
 						this is a visualizaton of noise in 2D,
 						I feed in the xy position of the box and I get a size
@@ -175,14 +175,14 @@ Math.random = function (){
 				</section>
 
 				<section data-background-image='img/vector-field.png'>
-					particle system<br>vector field
+					<a href='/particles.html'>particle system<br>vector field</a>
 					<aside class='notes'>
 						this is a set of particle systems where it's attracted to a center point, but it also flows through a vector field built with noise.  So when a particle flies through that (x,y) position it will be influenced in the same direction.  The green particles have the same thing happen but every tick of the simulation the velocity is bumped around randomly.
 					</aside>
 				</section>
 
 				<section data-background-video='img/test.mp4'>
-					<p style='color:white; margin-top: 500px;'>terrain generator</p>
+					<a href='/terrain-generator.html'><p style='margin-top: 500px;'>terrain generator</p></a>
 					<aside class='notes'>
 						This is from star trek 2, this is one of the first particle systems in a movie and it's also likely the first use of noise in computer graphics generation.  It utilized all the things we showed in the box demo.  They needed the algorithm to be repeatable - when the planet height for that position was chosen it needed to be the same on each run, otherwise the camera would fly through a mountain or the ocean wouldn't rise high enough.  They also couldn't store all this information and retrieve it every time they wanted to make a frame.
 
@@ -191,14 +191,14 @@ Math.random = function (){
 				</section>
 
 				<section>
-					waves thing
+					<a href='/rolling-waves.html'>waves thing</a>
 					<aside class='notes'>
 						Here is a thing that kind of emulates waves rolling in from the ocean.  You compress the y axis sample multiplier, then make the waves the right height relative to their period and tune the time, then have them roll in by increasing the sample offset in the y dimension - so if you had surf.js or ocean.js you could have this be your sprinkles
 					</aside>
 				</section>
 
 				<section>
-					rock thing
+					<a href='/rock-thing.html'>rock thing</a>
 					<aside class='notes'>
 						You can apply noise to more than just flat heightmaps.  A sphere is just a heightmap where the radius is the height of the terrain.  I'm actually doing two passes on the rock, one where I sample the noise zoomed in pretty far and use that to set the overall shape, then I zoom out and apply the noise in a detail.
 					</aside>
@@ -206,12 +206,11 @@ Math.random = function (){
 
 				<section data-background-image='img/wildflowers.jpg' style='color: white;'>
 					@wildflowersbot<br>
+					<a href='/scene.html'>scene</a>
 					<aside class='notes'>
 						I really like this bot called wildflowersbot.  It posts photos.  I'd like to do my own version that is a little pacific northwesty with a rock and some trees and some rolling hills.
 					</aside>
 				</section>
-
-
 
 			</div>
 		</div>
